@@ -15,12 +15,8 @@ mongoClient.connect(dbUrl, function(err, client) {
 
 var app = express();
 
-app.get('/', (req, res) => receipts(req, res));
+app.use(express.static('static'));
 app.get('/api/', (req, res) => api(req, res));
-
-function receipts(req, res) {
-    res.send("Test");
-}
 
 function api(req, res) {
     res.json({x: 1})
