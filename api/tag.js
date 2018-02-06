@@ -15,12 +15,10 @@ module.exports = class Receipt {
     }
 
     get(req, res) {
-        this.database.collection('test').find().toArray(function(err, docs) {
-            res.json(docs);
-        });
+        res.json({});
     }
 
     post(req, rest) {
-        
+
     }
 };
