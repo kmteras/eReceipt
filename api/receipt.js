@@ -48,7 +48,7 @@ module.exports = class Receipt {
     }
 
     post(req, res) {
-        req.body.date = new Date(req.body.date);
+        req.body.date = new Date(req.body.date); //body-parser parses date object to string
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({error: null});
