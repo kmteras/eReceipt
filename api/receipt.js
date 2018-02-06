@@ -3,23 +3,18 @@
 module.exports = class Receipt {
     static get validator(){
         return {
-            type: 'object',
-            properties: {
-                store: {
-                    type: 'string'
-                },
-                total: {
-                    type: 'number'
-                },
-                date: {
-                    type: 'string',
-                    format: 'date-time'
+            $and: [
+                { store: { $type: 'string' }},
+                { total: { $type: 'double' }},
+                { date: { $type: 'date' }},
+                {
+                    $and: [
+                        { items: { $exists: true } },
+                        { 'items.name': { $type: 'string' }},
+                        { 'items.amount': { $type: 'int' }},
+                        { 'items.price_per': { $type: 'double' }}
+                    ]
                 }
-            },
-            required: [
-                'store',
-                'total',
-                'date'
             ]
         }
     };
@@ -47,13 +42,13 @@ module.exports = class Receipt {
     }
 
     get(req, res) {
-        console.log(req.query);
         this.database.collection('receipts').find().toArray(function(err, docs) {
             res.json(docs);
         });
     }
 
     post(req, res) {
+        req.body.date = new Date(req.body.date);
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({error: null});

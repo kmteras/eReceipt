@@ -38,7 +38,6 @@ module.exports = class Tag {
     }
 
     post(req, res) {
-        console.log(req.body);
         this.database.collection('tags').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({error: null});
