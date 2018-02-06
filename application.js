@@ -2,10 +2,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./database.js');
+const fs = require('fs');
 
 const tag = new (require('./api/tag.js'))(db);
 const search = new (require('./api/search.js'))(db);
 const receipt = new (require('./api/receipt.js'))(db);
+
+//const privateKey = fs.readFileSync('ssl/server.key', 'utf8');
+//const publicKey = fs.readFileSync('ssl/server.crt', 'utf8');
 
 const app = express();
 

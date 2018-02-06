@@ -39,12 +39,12 @@ module.exports = class Receipt {
 
 
 
-        this.database.collection('tags').insertOne(req.body, function(err, result) {
+        this.database.collection('receipts').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({'error': null});
             }
             else {
-                res.json({});
+                res.json({"error": err});
             }
         });
     }
