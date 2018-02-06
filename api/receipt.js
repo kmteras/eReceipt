@@ -20,7 +20,7 @@ module.exports = class Receipt {
         });
     }
 
-    post(req, rest) {
-        
+    post(req, res) {
+        res.json({});
     }
 };

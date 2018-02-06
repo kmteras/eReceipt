@@ -18,7 +18,7 @@ module.exports = class Receipt {
         res.json({});
     }
 
-    post(req, rest) {
-
+    post(req, res) {
+        res.json({});
     }
 };
