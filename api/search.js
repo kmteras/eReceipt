@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = class Receipt {
+module.exports = class Search {
     constructor(db) {
         this.db = db;
         const that = this;
@@ -15,10 +15,7 @@ module.exports = class Receipt {
     }
 
     get(req, res) {
-        console.log(req.query);
-        this.database.collection('test').find().toArray(function(err, docs) {
-            res.json(docs);
-        });
+        res.json({});
     }
 
     post(req, res) {

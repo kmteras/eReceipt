@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = class Receipt {
+module.exports = class Tag {
     constructor(db) {
         this.db = db;
         const that = this;
@@ -19,6 +19,8 @@ module.exports = class Receipt {
     }
 
     post(req, res) {
+        console.log(req.body);
+
         res.json({});
     }
 };
