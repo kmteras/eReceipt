@@ -44,17 +44,7 @@ module.exports = class Tag {
     }
 
     post(req, res) {
-        if(req.body['name'] === undefined) {
-            res.status(500);
-            res.json({error: 'Tag name is not defined'});
-            return;
-        }
-
-        let tag = {
-            name2: req.body['name']
-        };
-
-        this.database.collection('tags').insertOne(tag, function(err, result) {
+        this.database.collection('tags').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({error: null});
             }

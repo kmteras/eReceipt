@@ -54,15 +54,12 @@ module.exports = class Receipt {
     }
 
     post(req, res) {
-
-
-
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
             if(err === null) {
-                res.json({'error': null});
+                res.json({error: null});
             }
             else {
-                res.json({"error": err});
+                res.json({error: err});
             }
         });
     }
