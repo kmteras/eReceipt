@@ -15,12 +15,31 @@ module.exports = class Tag {
     }
 
     get(req, res) {
-        res.json({});
+        this.database.collection('tags').find().toArray(function(err, docs) {
+            res.json(docs);
+        });
     }
 
     post(req, res) {
-        console.log(req.body);
+        if(req.body['name'] === undefined) {
+            res.status(500);
+            res.json({'error': 'Tag name is not defined'});
+            return;
+        }
 
-        res.json({});
+        let tag = {
+            'name': req.body['name']
+        };
+
+        
+
+        this.database.collection('tags').insertOne(tag, function(err, result) {
+            if(err === null) {
+                res.json({'error': null});
+            }
+            else {
+                res.json({});
+            }
+        });
     }
 };
