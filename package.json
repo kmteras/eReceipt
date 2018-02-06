@@ -7,5 +7,6 @@
   },
   "dependencies": {
     "mongodb": "^3.0.2"
+    "express": "^4.16.2"
   }
 }

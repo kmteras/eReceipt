@@ -1,4 +1,5 @@
 const http = require('http');
+const express = require('express');
 const mongoClient = require('mongodb').MongoClient;
 
 const dbUrl = 'mongodb://localhost:27017';
@@ -12,16 +13,17 @@ mongoClient.connect(dbUrl, function(err, client) {
     client.close();
 });
 
-var app = http.createServer(function(req, res) {
-    if(req.url.startsWith("/api")) {
-        //API Call
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify({api: "0.1"}));
-    } else {
-        //Front-end call; serve static file
-        //TODO: File serving
-    }
+var app = express();
 
-});
+app.get('/', (req, res) => receipts(req, res));
+app.get('/api/', (req, res) => api(req, res));
 
-app.listen(3000);
+function receipts(req, res) {
+    res.send("Test");
+}
+
+function api(req, res) {
+    res.json({x: 1})
+}
+
+app.listen(3000, () => console.log('Server running on port 3000'));
