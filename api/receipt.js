@@ -1,5 +1,19 @@
 'use strict';
 
+///{
+///    date: date,
+///    user_id: user_id,
+///    total: decimal,
+///    store: string,
+///    items: [
+///    {
+///        name: string,
+///        amount: integer,
+///        price_per: decimal,
+///    }
+///]
+///}
+
 module.exports = class Receipt {
     constructor(db) {
         this.db = db;
@@ -16,12 +30,22 @@ module.exports = class Receipt {
 
     get(req, res) {
         console.log(req.query);
-        this.database.collection('test').find().toArray(function(err, docs) {
+        this.database.collection('receipts').find().toArray(function(err, docs) {
             res.json(docs);
         });
     }
 
     post(req, res) {
-        res.json({});
+
+
+
+        this.database.collection('tags').insertOne(req.body, function(err, result) {
+            if(err === null) {
+                res.json({'error': null});
+            }
+            else {
+                res.json({});
+            }
+        });
     }
 };
