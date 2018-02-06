@@ -3,14 +3,8 @@
 module.exports = class Tag {
     static get validator(){
         return {
-            type: 'object',
-            properties: {
-                name: {
-                    type: 'string'
-                }
-            },
-            required: [
-                'name'
+            $and: [
+                { name: { $type: 'string'}}
             ]
        }
     };
@@ -44,6 +38,7 @@ module.exports = class Tag {
     }
 
     post(req, res) {
+        console.log(req.body);
         this.database.collection('tags').insertOne(req.body, function(err, result) {
             if(err === null) {
                 res.json({error: null});
