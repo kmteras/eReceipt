@@ -1,20 +1,29 @@
 'use strict';
 
-///{
-///    date: date,
-///    user_id: user_id,
-///    total: decimal,
-///    store: string,
-///    items: [
-///    {
-///        name: string,
-///        amount: integer,
-///        price_per: decimal,
-///    }
-///]
-///}
-
 module.exports = class Receipt {
+    static get validator(){
+        return {
+            type: 'object',
+            properties: {
+                store: {
+                    type: 'string'
+                },
+                total: {
+                    type: 'number'
+                },
+                date: {
+                    type: 'string',
+                    format: 'date-time'
+                }
+            },
+            required: [
+                'store',
+                'total',
+                'date'
+            ]
+        }
+    };
+
     constructor(db) {
         this.db = db;
         const that = this;
@@ -24,6 +33,15 @@ module.exports = class Receipt {
             }
             else {
                 that.database = database;
+                that.setup(database);
+            }
+        });
+    }
+
+    setup(db) {
+        db.createCollection('receipts', {validator: Receipt.validator}, function(err, result) {
+            if(err) {
+                throw err;
             }
         });
     }

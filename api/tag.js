@@ -30,7 +30,7 @@ module.exports = class Tag {
     }
 
     setup(db) {
-        db.createCollection("tags", {validator: Tag.validator}, function(err, result) {
+        db.createCollection('tags', {validator: Tag.validator}, function(err, result) {
             if(err) {
                 throw err;
             }
