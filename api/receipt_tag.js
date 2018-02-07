@@ -21,7 +21,17 @@ module.exports = class ReceiptTag {
     }
 
     delete(req, res) {
-        res.json({});
+        this.database.collection('receipts').updateOne({ _id: new ObjectID(req.body.receipt_id) },
+            {
+                $pull: {
+                    tags:
+                        {
+                            name: req.body.tag_name
+                        }
+                }
+            }, function (err, result) {
+                res.json({error: err, result: result});
+            });
     }
 
     post(req, res) {
@@ -33,28 +43,28 @@ module.exports = class ReceiptTag {
                     res.json(err);
                 }
                 else {
-
-
-                    console.log(req.body.receipt_id);
-
-                    that.database.collection('receipts').find().toArray(function(err, docs) {
-                        console.log(docs);
-                    });
-
                     that.database.collection('receipts').updateOne({ _id: new ObjectID(req.body.receipt_id) },
                         {
-                            $set: {
+                            $pull: {
                                 tags:
-                                    [
+                                    {
+                                        name: req.body.tag_name
+                                    }
+                            }
+                        }, function (err, result) {
+                        that.database.collection('receipts').updateOne({ _id: new ObjectID(req.body.receipt_id) },
+                            {
+                                $push: {
+                                    tags:
                                         {
                                             name: req.body.tag_name
                                         }
-                                    ]
-                            }
-                        },
-                        { upsert: true }, function (err, result) {
-                            res.json({error: err, result: result});
+                                }
+                            }, function (err, result) {
+                                res.json({error: err, result: result});
+                            });
                         });
+
                 }
         });
     }
