@@ -49,7 +49,6 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
 
 
 const httpsServer = https.createServer(httpsNoAuth, app);
@@ -78,10 +77,10 @@ const frontServer = net.createServer( (serversocket) => {
                 serversocket.pipe(clientsocket).pipe(serversocket);
             });
             clientsocket.on('error', function(err) {
-                serverSocket.end();
+                serversocket.end();
             });
             serversocket.on('error', function(err) {
-                clientSocket.end();
+                clientsocket.end();
             })
         } else {
             console.log("No SNI!");
