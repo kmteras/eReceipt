@@ -6,7 +6,7 @@ import datetime
 path_to_watch = "./resipt.txt"
 
 linec = 0
-with open(path_to_watch, 'r', encoding="utf-8") as f:
+with open(path_to_watch, 'r', encoding="ansi") as f:
     for line in f:
         linec += 1
 
@@ -14,7 +14,7 @@ with open(path_to_watch, 'r', encoding="utf-8") as f:
 while 1:
     time.sleep (1)
     delta = []
-    with open(path_to_watch, 'r', encoding="utf-8") as f:
+    with open(path_to_watch, 'r', encoding="ansi") as f:
         curlines = 0
         for line in f:
             curlines += 1
@@ -47,15 +47,15 @@ while 1:
         items = []
         total = 0
         for i in range(seconddashline + 1, thirddashline):
-            splitted = list(filter(lambda s: s!='', delta[i].split(" ")))
-            item_name = splitted[0]
-            item_cost = float(splitted[1].replace(",", "."))
-            item_amount = float(splitted[3])
+            splitted = list(filter(lambda s: s!='', delta[i][17:].split(" ")))
+            item_name = delta[i][0:17].strip()
+            item_cost = float(splitted[0].replace(",", "."))
+            item_amount = float(splitted[2])
             total += item_cost * item_amount
             item = {"name": item_name, "amount": item_amount, "price_per": item_cost}
             items.append(item)
 
-        request = {"store": "Nemo Doom", "total": total, "date": datetime.datetime.now(), "items": items}
+        request = {"store": "Nemo Doom", "total": total, "client_id": user.strip() , "date": datetime.datetime.now(), "items": items}
         conn = http.client.HTTPConnection("ereceipt.website")
         req_json = json.dumps(request, default=str)
         print(req_json)
