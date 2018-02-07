@@ -1,0 +1,3 @@
+[submodule "eReceipt-front"]
+	path = eReceipt-front
+	url = git@github.com:ivangsp/eReceipt-front.git
