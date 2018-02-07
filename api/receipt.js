@@ -47,6 +47,7 @@ module.exports = class Receipt {
 
         console.log(req.query);
 
+        //TODO: Replace with auth
         if(req.query.client_id === undefined) {
             res.json({error: 'Client_id parameter missing in request'});
             return;

@@ -6,6 +6,9 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
+const sni = require('sni-reader');
+const net = require('net');
+
 const tag = new (require('./api/tag.js'))(db);
 const search = new (require('./api/search.js'))(db);
 const receipt = new (require('./api/receipt.js'))(db);
@@ -46,8 +49,38 @@ app.get('/api/whoami', (req, res) => {
 const httpsServer = https.createServer(httpsNoAuth, app);
 const httpsAuthServer = https.createServer(httpsAuth, app);
 
-httpsServer.listen(3000, () => console.log('Server running on port 3000'));
-httpsAuthServer.listen(3001, () => console.log('Auth server running on port 3001'));
+httpsServer.listen(3001, () => console.log('Noauth Server running on port 3001'));
+httpsAuthServer.listen(3002, () => console.log('Auth server running on port 3002'));
 
-//TODO Redirect to HTTPS
-//TODO SNI proxy
+//TODO: Redirect to HTTPS
+
+const frontServer = net.createServer( (serversocket) => {
+    sni(serversocket, (err, sniName) => {
+        if(err) {
+            console.log("SNI error");
+            serversocket.end();
+        } else if(sniName) {
+            console.log("SNI:" + sniName );
+            let clientsocket = undefined;
+            if(sniName.includes("id")) {
+                clientsocket = net.connect({port: 3002, type: 'tcp', host: "localhost"});
+            } else{
+                clientsocket = net.connect({port: 3001, type: 'tcp', host: "localhost"});
+            }
+
+            clientsocket.on("connect" , () => {
+                serversocket.pipe(clientsocket).pipe(serversocket);
+            });
+            clientsocket.on('error', function(err) {
+                serverSocket.end();
+            });
+            serversocket.on('error', function(err) {
+                clientSocket.end();
+            })
+        } else {
+            console.log("No SNI!");
+            serversocket.end();
+        }
+    });
+});
+frontServer.listen(3000, () => console.log("Front server running on port 3000"));
