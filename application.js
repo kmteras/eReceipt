@@ -44,11 +44,13 @@ app.post('/api/tag/', (req, res) => tag.post(req, res));
 app.get('/api/search/', (req, res) => search.get(req, res));
 
 app.post('/api/receipt/tag', (req, res) => receipt_tag.post(req, res));
+app.delete('/api/receipt/tag', (req, res) => receipt_tag.delete(req, res));
 
 app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
+app.listen(3000, () => console.log("Front server running on port 3000"));
 
 const httpsServer = https.createServer(httpsNoAuth, app);
 const httpsAuthServer = https.createServer(httpsAuth, app);

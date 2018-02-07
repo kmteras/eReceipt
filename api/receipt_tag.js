@@ -20,6 +20,10 @@ module.exports = class ReceiptTag {
         res.json({});
     }
 
+    delete(req, res) {
+        res.json({});
+    }
+
     post(req, res) {
         const that = this;
 
