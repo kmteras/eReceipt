@@ -1,35 +1,21 @@
+Carola Kesküla - team lead
 
+	Backend:
+Karl Martin Teras - backend lead (does anything except frontend and design)
+Rao Zvorovski - node between backend and frontent, backend  
+	
+	Frontend:
+Max Melnyk - front-end lead
+Ivan Ojiambo  - front-end 
+Nikoloz Kalandarishvili - front-end, Java, C, CAD.
+Mason Michalec - frontent
 
+	Design:
+Eliisa Ülevain - design lead
+Polina Petuhhova - designer
+ Valeria Skabardia - designer 
+ Sirle - designer
 
-
-
-
-Demo Noom
-Raatuse 20, Tartu Tartumaa
-Reg. nr.: 12345678901
-KMKR nr.:
-
-Arve nr.:  000097-1810/5 07.02.2018 15:34
-OSTJA:
-KAART: IDC_*******0255
-       ELIISA ÜLEVAIN
-
-----------------------------------------
-Kauba nimetus     Hind KM% Kogus   Summa
-----------------------------------------
-BCAA              1,54 20%     1    1,54
-BCAA              1,54 20%     1    1,54
-----------------------------------------
-   KM%    KM alune    KM summa
-   20%        2,56        0,52
-
-         Summa käibemaksuta:        2,56
-                  Käibemaks:        0,52
-            SUMMA KOKKU EUR:        3,08
-                     Maksti:        3,08
-
-MAKSTUD pangakaardiga:          3,08
-
-Väljastas: /  Ereceipt /
-
-       KÜLASTAGE MEID JÄLLE ja JÄLLE!
+	Marketing:
+Jane Kryvenko - data scientist, analytical skills 
+Emmanuel Attu - business(!), management, business analysis, product management
