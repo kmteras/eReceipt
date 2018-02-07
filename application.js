@@ -31,7 +31,7 @@ const httpsAuth = {
 
 const app = express();
 
-app.use(express.static('static'));
+app.use(express.static('eReceipt-front/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
