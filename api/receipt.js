@@ -43,9 +43,39 @@ module.exports = class Receipt {
     }
 
     get(req, res) {
-        this.database.collection('receipts').find().toArray(function(err, docs) {
-            res.json(docs);
-        });
+        let request_data = {};
+
+        console.log(req.query);
+
+        if(req.query.client_id === undefined) {
+            res.json({error: 'Client_id parameter missing in request'});
+            return;
+        }
+
+        if(req.query.start_time !== undefined) {
+            request_data.date = {};
+            request_data.date.$gte = new Date(req.query.start_time);
+        }
+
+        if(req.query.end_time !== undefined) {
+            if (req.query.start_time === undefined) {
+                request_data.date = {};
+            }
+            request_data.date.$lte = new Date(req.query.end_time);
+        }
+
+        if(req.query.client_id === "-1") {
+            this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
+                res.json(docs);
+            });
+        }
+        else {
+            request_data.client_id = req.query.client_id;
+
+            this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
+                res.json(docs);
+            });
+        }
     }
 
     post(req, res) {
