@@ -10,7 +10,7 @@ module.exports = class Receipt {
                 { date: { $type: 'date' }},
                 {
                     $and: [
-                        { items: { $exists: true } },
+                        { items: { $exists: true }},
                         { 'items.name': { $type: 'string' }},
                         { 'items.amount': { $type: 'int' }},
                         { 'items.price_per': { $type: 'double' }}
@@ -45,8 +45,6 @@ module.exports = class Receipt {
     get(req, res) {
         let request_data = {};
 
-        console.log(req.query);
-
         if(req.query.client_id === undefined) {
             res.json({error: 'Client_id parameter missing in request'});
             return;
@@ -80,13 +78,9 @@ module.exports = class Receipt {
 
     post(req, res) {
         req.body.date = new Date(req.body.date); //body-parser parses date object to string
+        req.body.tags = [   ];
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
-            if(err === null) {
-                res.json({error: null});
-            }
-            else {
-                res.json({error: err});
-            }
+            res.json({error: null});
         });
     }
 };

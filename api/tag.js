@@ -28,6 +28,11 @@ module.exports = class Tag {
             if(err) {
                 throw err;
             }
+            db.collection('tags').createIndex({ name: 1 }, { unique: true }, function(err, result) {
+                if(err) {
+                    throw err;
+                }
+            });
         });
     }
 
@@ -39,12 +44,7 @@ module.exports = class Tag {
 
     post(req, res) {
         this.database.collection('tags').insertOne(req.body, function(err, result) {
-            if(err === null) {
-                res.json({error: null});
-            }
-            else {
-                res.json({error: err});
-            }
+            res.json(err);
         });
     }
 };
