@@ -4,6 +4,7 @@ module.exports = class Receipt {
     static get validator(){
         return {
             $and: [
+                { client_id: { $type: 'string' }},
                 { store: { $type: 'string' }},
                 { total: { $type: 'double' }},
                 { date: { $type: 'date' }},
