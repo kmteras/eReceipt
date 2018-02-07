@@ -51,7 +51,6 @@ app.get('/api/whoami', (req, res) => {
 
 app.listen(3000, () => console.log('Server running on port 3000'));
 
-
 const httpsServer = https.createServer(httpsNoAuth, app);
 const httpsAuthServer = https.createServer(httpsAuth, app);
 
@@ -89,4 +88,6 @@ const frontServer = net.createServer( (serversocket) => {
         }
     });
 });
-frontServer.listen(3000, () => console.log("Front server running on port 3000"));
+
+//TODO: For production
+//frontServer.listen(3000, () => console.log("Front server running on port 3000"));
