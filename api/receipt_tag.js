@@ -22,6 +22,10 @@ module.exports = class ReceiptTag {
         const that = this;
 
         this.database.collection('tags').insertOne({ name: req.body.tag_name }, function(err, result) {
+            if(err) {
+                throw err;
+            }
+            console.log(req.body.tag_name);
             that.database.collection('receipts').updateOne({ _id: req.body.receipt_id },
                 { $set: { tags: [req.body.tag_name] }}, function(err, result) {
                 res.json({error: err});
