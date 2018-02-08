@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 
 const helmet = require('helmet');
+const cors = require('cors');
 
 const sni = require('sni-reader');
 const net = require('net');
@@ -33,13 +34,18 @@ const httpsAuth = {
 const app = express();
 const app2 = express();
 
-app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin', "*" );
-    next(); 
+
+app.use(function(req, res, next) {
+    if(req.url == "/receipt"){
+        req.url = '/';
+    }
+    next();
 });
 
 app.use(helmet());
+app.use(cors());
 app2.use(helmet());
+app2.use(cors());
 app.use(express.static('eReceipt-front/dist/'));
 app2.use(express.static('eReceipt-front/simple_html/landing_page'));
 app.use(bodyParser.json());
