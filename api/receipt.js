@@ -39,6 +39,11 @@ module.exports = class Receipt {
             if(err) {
                 throw err;
             }
+            db.collection('receipts').createIndex({ store: 'text' }, { unique: true }, function(err, result) {
+                if(err) {
+                    throw err;
+                }
+            });
         });
     }
 
@@ -47,8 +52,13 @@ module.exports = class Receipt {
 
         //TODO: Replace with auth
         if(req.query.client_id === undefined) {
-            res.json({error: 'Client_id parameter missing in request'});
+            res.json({ error: 'Client_id parameter missing in request' });
             return;
+        }
+
+        if(req.query.store_search !== undefined) {
+            request_data.store = { $regex: new RegExp(`.*${req.query.store_search}.*`),
+                    $options: 'i'};
         }
 
         if(req.query.start_time !== undefined) {
