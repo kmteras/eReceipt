@@ -37,19 +37,30 @@ module.exports = class Tag {
     }
 
     get(req, res) {
-        let request_data = {};
-
         if(req.query.search !== undefined) {
-            request_data.name = { $regex: new RegExp(`.*${req.query.search}.*`),
-                $options: 'i'};
-            this.database.collection('tags').find(request_data).toArray(function(err, docs) {
-                res.json(docs);
+            this.database.collection('receipts').aggregate([
+                { $match: { 'tags.name': { $regex: new RegExp(`.*${req.query.search}.*`),
+                            $options: 'i'}}},
+                { $unwind: '$tags' },
+                //Intentionally doubled to not get all tags from receipt
+                { $match: { 'tags.name': { $regex: new RegExp(`.*${req.query.search}.*`),
+                            $options: 'i'}}},
+                { $group: { _id: '', tags: { $addToSet: '$tags' }}},
+                { $limit: 1 }
+            ]).toArray(function (err, docs) {
+                if(err) {
+                    res.json({ error: err });
+                }
+                else {
+                    res.json(docs[0].tags);
+                }
             });
         }
         else {
             this.database.collection('receipts').aggregate([
                 { $unwind: '$tags' },
-                { $group: { _id: '', tags: { $addToSet: '$tags' }}}
+                { $group: { _id: '', tags: { $addToSet: '$tags' }}},
+                { $limit: 1 }
             ]).toArray(function (err, docs) {
                 if(err) {
                     res.json({ error: err });
