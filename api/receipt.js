@@ -61,6 +61,10 @@ module.exports = class Receipt {
                     $options: 'i'};
         }
 
+        if(req.query.item_search !== undefined) {
+            request_data['items.name'] = { $regex: new RegExp(`.*${req.query.item_search}.*`) };
+        }
+
         if(req.query.start_time !== undefined) {
             request_data.date = {};
             request_data.date.$gte = new Date(req.query.start_time);
@@ -75,22 +79,31 @@ module.exports = class Receipt {
 
         if(req.query.client_id === "-1") {
             this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
-                res.json(docs);
+                if(err) {
+                    res.json({error: err});
+                }
+                else {
+                    res.json(docs);
+                }
             });
         }
         else {
             request_data.client_id = req.query.client_id;
 
             this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
-                res.json(docs);
+                if(err) {
+                    res.json({error: err});
+                }
+                else {
+                    res.json(docs);
+                }
             });
         }
     }
 
     post(req, res) {
-	console.log(req.body);
         req.body.date = new Date(req.body.date); //body-parser parses date object to string
-        req.body.tags = [   ];
+        req.body.tags = [];
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
             res.json({error: null});
         });
