@@ -39,7 +39,7 @@ module.exports = class Receipt {
             if(err) {
                 throw err;
             }
-            db.collection('receipts').createIndex({ store: 'text' }, { unique: true }, function(err, result) {
+            db.collection('receipts').createIndex({ store: 'text' }, { unique: false }, function(err, result) {
                 if(err) {
                     throw err;
                 }

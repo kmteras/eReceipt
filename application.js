@@ -26,8 +26,8 @@ const httpsNoAuth = {
 const httpsAuth = {
     key: privateKey,
     cert: publicKey,
-    requestCert: true,
-    rejectUnauthorized: true
+    //requestCert: true,
+    //rejectUnauthorized: true
 };
 
 const app = express();
@@ -55,7 +55,7 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
-//app.listen(3000, () => console.log("App running on port 3000"));
+app.listen(3004, () => console.log("Http testing server running on port 3004"));
 
 const httpsServer = https.createServer(httpsNoAuth, app2);
 const httpsAuthServer = https.createServer(httpsAuth, app);
