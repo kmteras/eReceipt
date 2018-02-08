@@ -39,7 +39,7 @@ module.exports = class Receipt {
             if(err) {
                 throw err;
             }
-            db.collection('receipts').createIndex({ store: 'text' }, { unique: true }, function(err, result) {
+            db.collection('receipts').createIndex({ store: 'text' }, { unique: false }, function(err, result) {
                 if(err) {
                     throw err;
                 }
@@ -88,6 +88,7 @@ module.exports = class Receipt {
     }
 
     post(req, res) {
+	console.log(req.body);
         req.body.date = new Date(req.body.date); //body-parser parses date object to string
         req.body.tags = [   ];
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
