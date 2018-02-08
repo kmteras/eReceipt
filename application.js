@@ -74,7 +74,6 @@ const frontServer = net.createServer( (serversocket) => {
         } else if(sniName) {
             let clientsocket = undefined;
             if(sniName.includes("id")) {
-                console.log("id");
                 clientsocket = net.connect({port: 3002, type: 'tcp', host: "localhost"});
             } else {
                 clientsocket = net.connect({port: 3001, type: 'tcp', host: "localhost"});
