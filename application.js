@@ -70,7 +70,7 @@ const frontServer = net.createServer( (serversocket) => {
             let clientsocket = undefined;
             if(sniName.includes("id")) {
                 clientsocket = net.connect({port: 3002, type: 'tcp', host: "localhost"});
-            } else{
+            } else {
                 clientsocket = net.connect({port: 3001, type: 'tcp', host: "localhost"});
             }
 
@@ -91,4 +91,4 @@ const frontServer = net.createServer( (serversocket) => {
 });
 
 //TODO: For production
-//frontServer.listen(3000, () => console.log("Front server running on port 3000"));
+frontServer.listen(3003, () => console.log("Front server running on port 3000"));
