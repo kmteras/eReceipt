@@ -55,6 +55,7 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
+app.listen(3004, () => console.log("Http testing server running on port 3004"));
 
 const httpsServer = https.createServer(httpsNoAuth, app2);
 const httpsAuthServer = https.createServer(httpsAuth, app);
