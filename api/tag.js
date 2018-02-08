@@ -42,11 +42,25 @@ module.exports = class Tag {
         if(req.query.search !== undefined) {
             request_data.name = { $regex: new RegExp(`.*${req.query.search}.*`),
                 $options: 'i'};
+            this.database.collection('tags').find(request_data).toArray(function(err, docs) {
+                res.json(docs);
+            });
+        }
+        else {
+            this.database.collection('receipts').aggregate([
+                { $unwind: '$tags' },
+                { $group: { _id: '', tags: { $addToSet: '$tags' }}}
+            ]).toArray(function (err, docs) {
+                if(err) {
+                    res.json({ error: err });
+                }
+                else {
+                    res.json(docs[0].tags);
+                }
+            });
         }
 
-        this.database.collection('tags').find(request_data).toArray(function(err, docs) {
-            res.json(docs);
-        });
+
     }
 
     post(req, res) {
