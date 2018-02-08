@@ -6,6 +6,8 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
+const helmet = require('helmet');
+
 const sni = require('sni-reader');
 const net = require('net');
 
@@ -31,6 +33,7 @@ const httpsAuth = {
 
 const app = express();
 
+app.use(helmet());
 app.use(express.static('eReceipt-front/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -50,7 +53,7 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
-app.listen(3000, () => console.log("Front server running on port 3000"));
+app.listen(3000, () => console.log("App running on port 3000"));
 
 const httpsServer = https.createServer(httpsNoAuth, app);
 const httpsAuthServer = https.createServer(httpsAuth, app);
@@ -66,7 +69,6 @@ const frontServer = net.createServer( (serversocket) => {
             console.log("SNI error");
             serversocket.end();
         } else if(sniName) {
-            console.log("SNI:" + sniName );
             let clientsocket = undefined;
             if(sniName.includes("id")) {
                 clientsocket = net.connect({port: 3002, type: 'tcp', host: "localhost"});
