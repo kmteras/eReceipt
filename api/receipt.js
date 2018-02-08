@@ -57,7 +57,7 @@ module.exports = class Receipt {
         }
 
         if(req.query.tags !== undefined) {
-            request_data['tags.name'] = { $all: JSON.parse(req.query.tags) };
+            request_data['tags.name'] = { $in: JSON.parse(req.query.tags) };
         }
 
         if(req.query.store_search !== undefined) {
