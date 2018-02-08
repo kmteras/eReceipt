@@ -52,7 +52,11 @@ app.post('/api/receipt/tag', (req, res) => receipt_tag.post(req, res));
 app.delete('/api/receipt/tag', (req, res) => receipt_tag.delete(req, res));
 
 app.get('/api/whoami', (req, res) => {
-    res.json(req.socket.getPeerCertificate().subject);
+    if(req.socket.getPeerCertificate().subject !== undefined) {
+        res.send(req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN);
+    } else {
+        res.send("Unknown user");
+    }
 });
 
 //app.listen(3000, () => console.log("App running on port 3000"));
