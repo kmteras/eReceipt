@@ -88,6 +88,7 @@ module.exports = class Receipt {
     }
 
     post(req, res) {
+	console.log(req.body);
         req.body.date = new Date(req.body.date); //body-parser parses date object to string
         req.body.tags = [   ];
         this.database.collection('receipts').insertOne(req.body, function(err, result) {

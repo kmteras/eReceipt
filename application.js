@@ -25,9 +25,9 @@ const httpsNoAuth = {
 };
 const httpsAuth = {
     key: privateKey,
-    cert: publicKey,
-    requestCert: true,
-    rejectUnauthorized: true
+    cert: publicKey
+    ,requestCert: true,
+    rejectUnauthorized: false
 };
 
 const app = express();
@@ -55,13 +55,13 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
-//app.listen(3000, () => console.log("App running on port 3000"));
 
 const httpsServer = https.createServer(httpsNoAuth, app2);
 const httpsAuthServer = https.createServer(httpsAuth, app);
 
 httpsServer.listen(3001, () => console.log('Noauth Server running on port 3001'));
 httpsAuthServer.listen(3002, () => console.log('Auth server running on port 3002'));
+
 
 //TODO: Redirect to HTTPS
 
@@ -95,5 +95,10 @@ const frontServer = net.createServer( (serversocket) => {
     });
 });
 
-//TODO: For production
-frontServer.listen(3000, () => console.log("Front server running on port 3000"));
+frontServer.listen(443, () => console.log("Front server running on port 3000"));
+
+
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
