@@ -33,6 +33,11 @@ const httpsAuth = {
 const app = express();
 const app2 = express();
 
+app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin', "*" );
+    next(); 
+});
+
 app.use(helmet());
 app2.use(helmet());
 app.use(express.static('eReceipt-front/dist/'));
@@ -99,7 +104,7 @@ const frontServer = net.createServer( (serversocket) => {
     });
 });
 
-frontServer.listen(443, () => console.log("Front server running on port 3000"));
+frontServer.listen(443, () => console.log("Front server running on port 443"));
 
 
 http.createServer(function (req, res) {
