@@ -4,7 +4,7 @@ module.exports = class Tag {
     static get validator(){
         return {
             $and: [
-                { name: { $type: 'string'}}
+                { name: { $type: 'string' }}
             ]
        }
     };
@@ -28,7 +28,7 @@ module.exports = class Tag {
             if(err) {
                 throw err;
             }
-            db.collection('tags').createIndex({ name: 1 }, { unique: true }, function(err, result) {
+            db.collection('tags').createIndex({ name: 'text' }, { unique: true }, function(err, result) {
                 if(err) {
                     throw err;
                 }
@@ -37,14 +37,20 @@ module.exports = class Tag {
     }
 
     get(req, res) {
-        this.database.collection('tags').find().toArray(function(err, docs) {
+        let request_data = {};
+
+        if(req.query.search !== undefined) {
+            request_data = { name: new RegExp(`.*${req.query.search}.*`) };
+        }
+
+        this.database.collection('tags').find(request_data).toArray(function(err, docs) {
             res.json(docs);
         });
     }
 
     post(req, res) {
         this.database.collection('tags').insertOne(req.body, function(err, result) {
-            res.json(err);
+            res.json({ error: err });
         });
     }
 };
