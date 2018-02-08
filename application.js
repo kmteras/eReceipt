@@ -16,7 +16,6 @@ const search = new (require('./api/search.js'))(db);
 const receipt = new (require('./api/receipt.js'))(db);
 const receipt_tag = new (require('./api/receipt_tag.js'))(db);
 
-
 const privateKey = fs.readFileSync('ssl/server.key', 'utf8');
 const publicKey = fs.readFileSync('ssl/server.crt', 'utf8');
 
@@ -32,9 +31,12 @@ const httpsAuth = {
 };
 
 const app = express();
+const app2 = express();
 
 app.use(helmet());
-app.use(express.static('eReceipt-front/dist'));
+app2.use(helmet());
+app.use(express.static('eReceipt-front/dist/'));
+app2.use(express.static('eReceipt-front/simple_html/landing_page'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
@@ -53,9 +55,9 @@ app.get('/api/whoami', (req, res) => {
     res.json(req.socket.getPeerCertificate().subject);
 });
 
-app.listen(3000, () => console.log("App running on port 3000"));
+//app.listen(3000, () => console.log("App running on port 3000"));
 
-const httpsServer = https.createServer(httpsNoAuth, app);
+const httpsServer = https.createServer(httpsNoAuth, app2);
 const httpsAuthServer = https.createServer(httpsAuth, app);
 
 httpsServer.listen(3001, () => console.log('Noauth Server running on port 3001'));
@@ -71,6 +73,7 @@ const frontServer = net.createServer( (serversocket) => {
         } else if(sniName) {
             let clientsocket = undefined;
             if(sniName.includes("id")) {
+                console.log("id");
                 clientsocket = net.connect({port: 3002, type: 'tcp', host: "localhost"});
             } else{
                 clientsocket = net.connect({port: 3001, type: 'tcp', host: "localhost"});
@@ -93,4 +96,4 @@ const frontServer = net.createServer( (serversocket) => {
 });
 
 //TODO: For production
-//frontServer.listen(3000, () => console.log("Front server running on port 3000"));
+frontServer.listen(3000, () => console.log("Front server running on port 3000"));
