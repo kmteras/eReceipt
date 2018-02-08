@@ -40,7 +40,8 @@ module.exports = class Tag {
         let request_data = {};
 
         if(req.query.search !== undefined) {
-            request_data = { name: new RegExp(`.*${req.query.search}.*`) };
+            request_data.name = { $regex: new RegExp(`.*${req.query.search}.*`),
+                $options: 'i'};
         }
 
         this.database.collection('tags').find(request_data).toArray(function(err, docs) {
