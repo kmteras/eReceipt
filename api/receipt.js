@@ -77,6 +77,12 @@ module.exports = class Receipt {
             res.json({ error: 'Client_id parameter missing in request' });
             return;
         }
+        else if(req.query.client_id !== "-1") {
+            request_data.client_id = req.query.client_id;
+        }
+        // else {
+        //     request_data.client_id = 'DEMO_CLIENT';
+        // }
 
         if(req.query.tags !== undefined) {
             request_data['tags.name'] = { $in: JSON.parse(req.query.tags) };
@@ -110,28 +116,14 @@ module.exports = class Receipt {
             request_data.business = { $eq: true };
         }
 
-        if(req.query.client_id === "-1") {
-            this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
-                if(err) {
-                    res.json({error: err});
-                }
-                else {
-                    res.json(docs);
-                }
-            });
-        }
-        else {
-            request_data.client_id = req.query.client_id;
-
-            this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
-                if(err) {
-                    res.json({error: err});
-                }
-                else {
-                    res.json(docs);
-                }
-            });
-        }
+        this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
+            if(err) {
+                res.json({error: err});
+            }
+            else {
+                res.json(docs);
+            }
+        });
     }
 
     post(req, res) {

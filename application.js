@@ -67,7 +67,7 @@ app.get('/api/whoami', (req, res) => {
     if(req.socket.getPeerCertificate().subject !== undefined) {
         res.send(req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN);
     } else {
-        res.send("Unknown user");
+        res.send("DEMO_CLIENT");
     }
 });
 
