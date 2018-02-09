@@ -10,7 +10,6 @@ const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const spdy = require('spdy');
 
 const sni = require('sni-reader');
 const net = require('net');
@@ -86,8 +85,8 @@ app.get('/api/whoami', (req, res) => {
 
 app.listen(3004, () => console.log("Http testing server running on port 3004"));
 
-const httpsServer = spdy.createServer(httpsNoAuth, app2);
-const httpsAuthServer = spdy.createServer(httpsAuth, app);
+const httpsServer = https.createServer(httpsNoAuth, app2);
+const httpsAuthServer = https.createServer(httpsAuth, app);
 
 httpsServer.listen(3001, () => console.log('Noauth Server running on port 3001'));
 httpsAuthServer.listen(3002, () => console.log('Auth server running on port 3002'));
@@ -97,6 +96,7 @@ httpsAuthServer.listen(3002, () => console.log('Auth server running on port 3002
 
 const frontServer = net.createServer( (serversocket) => {
     sni(serversocket, (err, sniName) => {
+        console.log(sniName);
         if(err) {
             console.log("SNI error");
             serversocket.end();
