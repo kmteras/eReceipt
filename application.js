@@ -64,6 +64,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 
 const longpoll =  require("express-longpoll")(app);
 
+app.put('/api/receipt/', (req, res) => receipt.put(req, res));
 app.get('/api/receipt/', (req, res) => receipt.get(req, res));
 app.post('/api/receipt/', (req, res) => receipt.post(req, res));
 
@@ -79,7 +80,7 @@ app.get('/api/whoami', (req, res) => {
     if(req.socket.getPeerCertificate().subject !== undefined) {
         res.send(req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN);
     } else {
-        res.send("Unknown user");
+        res.send("DEMO_CLIENT");
     }
 });
 
