@@ -1,5 +1,7 @@
 'use strict';
 
+const ObjectID = require('mongodb').ObjectID;
+
 module.exports = class Receipt {
     static get validator(){
         return {
@@ -8,6 +10,7 @@ module.exports = class Receipt {
                 { store: { $type: 'string' }},
                 { total: { $type: 'double' }},
                 { date: { $type: 'date' }},
+                //{ business: { $type: 'bool' }},
                 {
                     $and: [
                         { items: { $exists: true }},
@@ -47,6 +50,25 @@ module.exports = class Receipt {
         });
     }
 
+    put(req, res) {
+        if(req.body.receipt_id === undefined) {
+            res.json({ error: 'Receipt id value need to be defined' });
+        }
+
+        if(req.body.business === undefined) {
+            res.json({ error: 'Busniness value needs to be defined' });
+        }
+
+        this.database.collection('receipts').updateOne({ _id: new ObjectID(req.body.receipt_id) },
+            {
+                $set: {
+                    business: req.body.business
+                }
+            }, function (err, result) {
+                res.json({error: err, result: result});
+            });
+    }
+
     get(req, res) {
         let request_data = {};
 
@@ -81,6 +103,13 @@ module.exports = class Receipt {
             request_data.date.$lte = new Date(req.query.end_time);
         }
 
+        if(req.query.business === undefined || req.query.business === false) {
+            request_data.$or = [ { business: { $eq: false }}, { business: { $exists: false }}];
+        }
+        else {
+            request_data.business = { $eq: true };
+        }
+
         if(req.query.client_id === "-1") {
             this.database.collection('receipts').find(request_data).toArray(function(err, docs) {
                 if(err) {
@@ -108,6 +137,7 @@ module.exports = class Receipt {
     post(req, res) {
         req.body.date = new Date(req.body.date); //body-parser parses date object to string
         req.body.tags = [];
+        req.business = false;
         this.database.collection('receipts').insertOne(req.body, function(err, result) {
             res.json({error: null});
         });

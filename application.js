@@ -51,6 +51,7 @@ app2.use(express.static('eReceipt-front/simple_html/landing_page'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
+app.put('/api/receipt/', (req, res) => receipt.put(req, res));
 app.get('/api/receipt/', (req, res) => receipt.get(req, res));
 app.post('/api/receipt/', (req, res) => receipt.post(req, res));
 
