@@ -59,7 +59,6 @@ module.exports = class Tag {
                 { $group: { _id: '', tags: { $addToSet: '$tags' }}},
                 { $limit: 1 }
             ]).toArray(function (err, docs) {
-                console.log(docs);
                 if(err) {
                     res.json({ error: err });
                 }
@@ -80,7 +79,6 @@ module.exports = class Tag {
                 { $group: { _id: '', tags: { $addToSet: '$tags' }}},
                 { $limit: 1 }
             ]).toArray(function (err, docs) {
-                console.log(docs);
                 if(err) {
                     res.json({ error: err });
                 }
