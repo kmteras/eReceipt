@@ -64,7 +64,7 @@ module.exports = class Tag {
                     res.json({ error: err });
                 }
                 else {
-                    if(docs[0].tags !== undefined) {
+                    if(docs[0] !== undefined) {
                         res.json(docs[0].tags);
                     }
                     else {
@@ -85,7 +85,7 @@ module.exports = class Tag {
                     res.json({ error: err });
                 }
                 else {
-                    if(docs[0].tags !== undefined) {
+                    if(docs[0] !== undefined) {
                         res.json(docs[0].tags);
                     }
                     else {
