@@ -37,8 +37,17 @@ module.exports = class Tag {
     }
 
     get(req, res) {
+        let clientId = '';
+
+        if(req.socket.getPeerCertificate().subject !== undefined) {
+            clientId = req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN;
+        } else {
+            clientId = 'DEMO_CLIENT';
+        }
+
         if(req.query.search !== undefined) {
             this.database.collection('receipts').aggregate([
+                { $match: { client_id: clientId }},
                 { $match: { 'tags.name': { $regex: new RegExp(`.*${req.query.search}.*`),
                             $options: 'i'}}},
                 { $unwind: '$tags' },
@@ -48,25 +57,38 @@ module.exports = class Tag {
                 { $group: { _id: '', tags: { $addToSet: '$tags' }}},
                 { $limit: 1 }
             ]).toArray(function (err, docs) {
+                console.log(docs);
                 if(err) {
                     res.json({ error: err });
                 }
                 else {
-                    res.json(docs[0].tags);
+                    if(docs[0].tags !== undefined) {
+                        res.json(docs[0].tags);
+                    }
+                    else {
+                        res.json({});
+                    }
                 }
             });
         }
         else {
             this.database.collection('receipts').aggregate([
+                { $match: { client_id: clientId }},
                 { $unwind: '$tags' },
                 { $group: { _id: '', tags: { $addToSet: '$tags' }}},
                 { $limit: 1 }
             ]).toArray(function (err, docs) {
+                console.log(docs);
                 if(err) {
                     res.json({ error: err });
                 }
                 else {
-                    res.json(docs[0].tags);
+                    if(docs[0].tags !== undefined) {
+                        res.json(docs[0].tags);
+                    }
+                    else {
+                        res.json({});
+                    }
                 }
             });
         }

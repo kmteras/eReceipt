@@ -77,6 +77,7 @@ app.delete('/api/receipt/tag', (req, res) => receipt_tag.delete(req, res));
 
 app.get('/api/whoami', (req, res) => {
     if(req.socket.getPeerCertificate().subject !== undefined) {
+        console.log(req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) + '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') + "_" + req.socket.getPeerCertificate().subject.SN);
         res.send(req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN);
     } else {
         res.send("DEMO_CLIENT");

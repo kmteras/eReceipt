@@ -72,15 +72,11 @@ module.exports = class Receipt {
     get(req, res) {
         let request_data = {};
 
-        //TODO: Replace with auth
-        if(req.query.client_id === undefined) {
-            res.json({ error: 'Client_id parameter missing in request' });
-            return;
-        }
-        else if(req.query.client_id !== "-1") {
-            request_data.client_id = req.query.client_id;
-        }
-        else {
+        if(req.socket.getPeerCertificate().subject !== undefined) {
+            request_data.client_id = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
+                '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
+                '_' + req.socket.getPeerCertificate().subject.SN;
+        } else {
             request_data.client_id = 'DEMO_CLIENT';
         }
 
