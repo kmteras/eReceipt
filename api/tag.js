@@ -40,7 +40,9 @@ module.exports = class Tag {
         let clientId = '';
 
         if(req.socket.getPeerCertificate().subject !== undefined) {
-            clientId = req.socket.getPeerCertificate().subject.GN + " " + req.socket.getPeerCertificate().subject.SN;
+            clientId = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
+                '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
+                '_' + req.socket.getPeerCertificate().subject.SN;
         } else {
             clientId = 'DEMO_CLIENT';
         }
