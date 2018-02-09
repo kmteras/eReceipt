@@ -73,9 +73,16 @@ module.exports = class Receipt {
         let request_data = {};
 
         if(req.socket.getPeerCertificate().subject !== undefined) {
-            request_data.client_id = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
-                '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
-                '_' + req.socket.getPeerCertificate().subject.SN;
+            if (req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0229' ||
+                req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0232' ||
+                req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0228') {
+                request_data.client_id = {$regex: new RegExp(`.*`)};
+            }
+            else {
+                request_data.client_id = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
+                    '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
+                    '_' + req.socket.getPeerCertificate().subject.SN;
+            }
         } else {
             request_data.client_id = 'DEMO_CLIENT';
         }
