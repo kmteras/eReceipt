@@ -30,8 +30,8 @@ const httpsNoAuth = {
 const httpsAuth = {
     key: privateKey,
     cert: publicKey
-    ,requestCert: true,
-    rejectUnauthorized: false
+//    ,requestCert: true,
+//    rejectUnauthorized: true
 };
 
 const app = express();
@@ -49,13 +49,11 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(compression());
-app2.use(compression());
+//app.use(compression());
+//app2.use(compression());
 
 app.use(helmet());
-app.use(cors());
 app2.use(helmet());
-app2.use(cors());
 app.use(express.static('eReceipt-front/dist/'));
 app2.use(express.static('eReceipt-front/simple_html/landing_page'));
 app.use(bodyParser.json());
