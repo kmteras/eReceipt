@@ -80,9 +80,9 @@ module.exports = class Receipt {
         else if(req.query.client_id !== "-1") {
             request_data.client_id = req.query.client_id;
         }
-        // else {
-        //     request_data.client_id = 'DEMO_CLIENT';
-        // }
+        else {
+            request_data.client_id = 'DEMO_CLIENT';
+        }
 
         if(req.query.tags !== undefined) {
             request_data['tags.name'] = { $in: JSON.parse(req.query.tags) };
