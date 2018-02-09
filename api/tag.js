@@ -40,9 +40,16 @@ module.exports = class Tag {
         let clientId = '';
 
         if(req.socket.getPeerCertificate().subject !== undefined) {
-            clientId = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
-                '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
-                '_' + req.socket.getPeerCertificate().subject.SN;
+            if (req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0229' ||
+                req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0232' ||
+                req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) === '0228') {
+                clientId = {$regex: new RegExp(`.*`)};
+            }
+            else {
+                clientId = req.socket.getPeerCertificate().subject.serialNumber.substr(7, 4) +
+                    '_' + req.socket.getPeerCertificate().subject.GN.replace(' ', '_') +
+                    '_' + req.socket.getPeerCertificate().subject.SN;
+            }
         } else {
             clientId = 'DEMO_CLIENT';
         }
