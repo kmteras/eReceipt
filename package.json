@@ -7,10 +7,13 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "express-longpoll": "0.0.4",
     "helmet": "^3.10.0",
     "mongodb": "^3.0.2",
-    "sni-reader": "^0.1.1"
+    "sni-reader": "^0.1.1",
+    "spdy": "^3.4.7"
   }
 }
